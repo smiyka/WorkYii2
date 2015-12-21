@@ -1,7 +1,10 @@
 <?php
 
+use app\models\Category;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Posts */
@@ -13,7 +16,18 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'text_post')->textarea(['rows' => 6]) ?>
-    <?= $form->field($model, 'categori_ids')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Category::find()->all(),'id','name'), ['multiple'=>'multiple']) ?>
+    <?= $form->field($model, 'categori_ids')
+        ->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Category::find()->all(),'id','name'),
+            'language' => 'en',
+            'options' => ['multiple' => true, 'placeholder' => 'Select a state ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);
+//        dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Category::find()
+//            ->all(),'id','name')
+//        ])]) ?>
 
 
 

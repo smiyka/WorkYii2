@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
 
 /**
  * PostController implements the CRUD actions for Posts model.
