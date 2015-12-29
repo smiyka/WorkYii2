@@ -30,7 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'text_post:ntext',
-        ],
-    ]) ?>
+            'categories' => [
+                    'label' => 'Categories',
+                    'value' => function (Posts $model) {
+                        return implode(', ', ArrayHelper::getColumn($model->categories));
+                    }
+                ],
+            ],
+        ])
+    ?>
 
 </div>

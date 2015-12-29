@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -101,10 +102,9 @@ class CategoryController extends Controller
         $model = $this->findModel($id);
         if (!$model->posts){
             $model->delete();
+        } else {
+            return $this->redirect(['index']);
         }
-
-
-        return $this->redirect(['index']);
     }
 
     /**

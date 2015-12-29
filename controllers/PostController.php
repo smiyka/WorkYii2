@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
+use app\models\PostSearch;
 
 /**
  * PostController implements the CRUD actions for Posts model.
@@ -35,13 +36,21 @@ class PostController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Posts::find(),
-        ]);
+        $searchModel = new postSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'categori_ids' => $this->getCategori_Ids(),
         ]);
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => Posts::find(),
+//        ]);
+//
+//        return $this->render('index', [
+//            'dataProvider' => $dataProvider,
+//        ]);
     }
 
     /**
@@ -92,19 +101,19 @@ class PostController extends Controller
         $model = $this->findModel($id);
         $model->categori_ids = ArrayHelper::getColumn($model->categories, 'id');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->unlinkAll('categories', true);
-  ;          $categories = Category::find()->where(['id'=>$model->categori_ids])->all();
-            foreach($categories as $category){
-                $model->link('categories', $category);
-            }
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'category_names' => ArrayHelper::map(Category::find()->all(), 'id', 'name')
-            ]);
-        }
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            $model->unlinkAll('categories', true);
+//  ;          $categories = Category::find()->where(['id'=>$model->categori_ids])->all();
+//            foreach($categories as $category){
+//                $model->link('categories', $category);
+//            }
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('update', [
+//                'model' => $model,
+//                'categori_ids' => ArrayHelper::map(Category::find()->all(), 'id', 'name')
+//            ]);
+//        }
     }
 
     /**
@@ -116,9 +125,10 @@ class PostController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $model->unlinkAll('categories', true);
-        $model->delete();
-
+        if (!$model) {
+            $model->unlinkAll('categories', true);
+            $model->delete();
+        } else
         return $this->redirect(['index']);
     }
 
@@ -137,4 +147,17 @@ class PostController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    /**
+     * @return array
+     */
+    public function getCategori_Ids()
+    {
+        $categories = Category::find()->asArray()->all();
+        $categori_ids = ArrayHelper::map($categories, 'id', 'name');
+
+        return $categori_ids;
+    }
+
+
 }

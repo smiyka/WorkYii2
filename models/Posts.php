@@ -15,6 +15,7 @@ use Yii;
 class Posts extends \yii\db\ActiveRecord
 {
     public $categori_ids;
+    public $categoriesList;
     /**
      * @inheritdoc
      */

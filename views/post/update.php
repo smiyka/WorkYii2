@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Posts */
+/* @var $categori_ids array*/
 
 $this->title = 'Update Posts: ' . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'categori_ids' => $categori_ids,
     ]) ?>
 
 </div>

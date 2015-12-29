@@ -51,6 +51,5 @@
             "npm-asset-library": "vendor/npm",
             "bower-asset-library": "vendor/bower"
         }
-    },
-    "kartik-v/yii2-widget-select2": "@dev"
+    }
 }
